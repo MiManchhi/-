@@ -2,7 +2,8 @@
 
 WorkerManager::WorkerManager()
 {
-
+	this->workNum = 0;
+	this->workarray = NULL;
 }
 
 void WorkerManager::ShowMenu()
@@ -27,8 +28,110 @@ void WorkerManager::ExitSystem()
 	system("pause");
 	exit(0); //结束正在执行的程序 
 }
+void WorkerManager::Addworker()
+{
+	cout << "请输入添加人数：" << endl;
+	int addnum = 0;
+	cin >> addnum;
+	if (addnum >0 )
+	{
+		int newsize = this->workNum + addnum;
+		Worker** newspace = new Worker*[newsize];
+		if (this->workarray != NULL)
+		{
+			for (int i = 0; i < this->workNum; i++)
+			{
+				newspace[i] = this->workarray[i];
+			}
+		}
+		for (int i = 0; i < addnum; i++)
+		{
+			string id;
+			string name;
+			string did;
+			cout << "请输入第" << i + 1 << "个员工的编号" << endl;
+			cin >> id;
+			cout << "请输入第" << i + 1 << "个员工的姓名" << endl;
+			cin >> name;
+			while (true)
+			{
+				cout << "请输入第" << i + 1 << "个员工的岗位" << "(员工，经理，老板)" << endl;
+				cin >> did;
+				if (did.compare("员工") == 0 || did.compare("经理") == 0 || did.compare("老板") == 0)
+				{
+					break;
+				}
+				else
+				{
+					cout << "输入错误，请重新输入！" << endl;
+				}
+			}
+			int temp = 0;
+			if (did == "员工")
+			{
+				temp = 1;
+			}
+			if (did == "经理")
+			{
+				temp = 2;
+			}
+			if (did == "老板")
+			{
+				temp = 3;
+			}
+			Worker* worker = NULL;
+			switch (temp)
+			{
+			case 1:
+				worker = new Employee(id, name, did);
+				break;
+			case 2:
+				worker = new Manager(id, name, did);
+				break;
+			case 3:
+				worker = new Boss(id, name, did);
+				break;
+			default:
+				break;
+			}
+			//添加新员工
+			newspace[this->workNum + i] = worker;
+		}
+		//删除原来空间
+		delete[] workarray;
+		//更改新空间指向
+		this->workarray = newspace;
+		//更新人数
+		this->workNum = newsize;
+		cout << "成功添加" << addnum << "名员工!" << endl;
+		this->Save();
+	}
+	else
+	{
+		cout << "输入有误！" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+void WorkerManager::Save()
+{
+	ofstream ofs;
+	ofs.open(FILENAME, ios::out);
+	for (int i = 0; i < this->workNum; i++)
+	{
+		ofs << this->workarray[i]->ID << "\t";
+		ofs << this->workarray[i]->Name << "\t";
+		ofs << this->workarray[i]->DeptID << endl;
+	}
+	ofs.close();
+}
 
 WorkerManager :: ~WorkerManager()
 {
-
+	if (this->workarray != NULL)
+	{
+		delete[] this->workarray;
+		this->workarray = NULL;
+	}
 }

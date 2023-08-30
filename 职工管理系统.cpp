@@ -38,7 +38,7 @@ int main()
 		case 7: //清空所有文档
 			break;
 		default:
-			system("cls");
+			system("cls");	
 			break;
 		}
 	}

@@ -22,8 +22,14 @@ public:
 	int workNum;
 	//员工数组指针
 	Worker** workarray;
+	//判断文件是否为空的标志
+	bool WorkerIsEmpty;
 	//保存文件
 	void Save();
+	//文件中员工的人数
+	int GetNum();
+	//初始化员工
+	void initWorker();
 
 	~WorkerManager();
 };

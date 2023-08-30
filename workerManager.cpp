@@ -2,8 +2,44 @@
 
 WorkerManager::WorkerManager()
 {
-	this->workNum = 0;
-	this->workarray = NULL;
+	//文件不存在
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+	if (!ifs.is_open())
+	{
+		// 测试 cout << "文件不存在!" << endl;
+		this->workNum = 0;
+		this->workarray = NULL;
+		this->WorkerIsEmpty = true;
+		ifs.close();
+		return;
+	}
+	//文件存在，但为空
+	char ch;
+	ifs.open(FILENAME, ios::in);
+	ifs >> ch;
+	if (ifs.eof())
+	{
+		// 测试 cout << "文件为空！" << endl;
+		this->workNum = 0;
+		this->workarray = NULL;
+		this->WorkerIsEmpty = true;
+		ifs.close();
+		return;
+	}
+
+	//文件存在且有记录
+	int num = GetNum();
+	// 测试数据 cout << num << endl;
+	this->workNum = num;
+	this->workarray = new Worker * [this->workNum];
+	this->initWorker();
+	/*for (int i = 0; i < num; i++)
+	{
+		cout << this->workarray[i]->ID << "\t";
+		cout << this->workarray[i]->Name << "\t";
+		cout << this->workarray[i]->DeptID << endl;
+	}*/
 }
 
 void WorkerManager::ShowMenu()
@@ -28,6 +64,7 @@ void WorkerManager::ExitSystem()
 	system("pause");
 	exit(0); //结束正在执行的程序 
 }
+
 void WorkerManager::Addworker()
 {
 	cout << "请输入添加人数：" << endl;
@@ -105,6 +142,7 @@ void WorkerManager::Addworker()
 		this->workNum = newsize;
 		cout << "成功添加" << addnum << "名员工!" << endl;
 		this->Save();
+		this->WorkerIsEmpty = false;
 	}
 	else
 	{
@@ -134,4 +172,49 @@ WorkerManager :: ~WorkerManager()
 		delete[] this->workarray;
 		this->workarray = NULL;
 	}
+}
+
+int WorkerManager::GetNum()
+{
+	ifstream ifs;
+	string id;
+	string name;
+	string did;
+	int num = 0;
+	ifs.open(FILENAME, ios::in);
+	while (ifs >> id && ifs >> name && ifs >> name)
+	{
+		num++;
+	}
+	ifs.close();
+	return num;
+}
+
+void WorkerManager::initWorker()
+{
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+	string id;
+	string name;
+	string did;
+	int index = 0;
+	while (ifs >> id && ifs >> name && ifs >> did)
+	{
+		Worker* worker = NULL;
+		if (did == "员工")
+		{
+			worker = new Employee(id, name, did);
+		}
+		if (did == "经理")
+		{
+			worker = new Manager(id, name, did);
+		}
+		if (did == "老板")
+		{
+			worker = new Boss(id, name, did);
+		}
+		this->workarray[index] = worker;
+		index++;
+	}
+	ifs.close();
 }

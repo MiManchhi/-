@@ -32,8 +32,19 @@ WorkerManager::WorkerManager()
 	int num = GetNum();
 	// 测试数据 cout << num << endl;
 	this->workNum = num;
-	this->workarray = new Worker * [this->workNum];
-	this->initWorker();
+	if (num == 0)
+	{
+		this->workNum = 0;
+		this->workarray = NULL;
+		this->WorkerIsEmpty = true;
+		ifs.close();
+		return;
+	}
+	else
+	{
+		this->workarray = new Worker * [this->workNum];
+		this->initWorker();
+	}
 	/*for (int i = 0; i < num; i++)
 	{
 		cout << this->workarray[i]->ID << "\t";
@@ -88,6 +99,13 @@ void WorkerManager::Addworker()
 			string did;
 			cout << "请输入第" << i + 1 << "个员工的编号" << endl;
 			cin >> id;
+			int index = this->Exitisworker(id);
+			while (index != -1)
+			{
+				cout << "员工编号已存在！请重新输入！" << endl;
+				cin >> id;
+				index = this->Exitisworker(id);
+			}
 			cout << "请输入第" << i + 1 << "个员工的姓名" << endl;
 			cin >> name;
 			while (true)
@@ -167,10 +185,17 @@ void WorkerManager::Save()
 
 WorkerManager :: ~WorkerManager()
 {
-	if (this->workarray != NULL)
+	if (!this->WorkerIsEmpty)
 	{
+		for (int i = 0; i < this->workNum; i++)
+		{
+			if (this->workarray[i] != NULL)
+			{
+				delete this->workarray[i];
+			}
+		}
 		delete[] this->workarray;
-		this->workarray = NULL;
+		this->workarray == NULL;
 	}
 }
 
@@ -217,4 +242,229 @@ void WorkerManager::initWorker()
 		index++;
 	}
 	ifs.close();
+}
+
+void WorkerManager::Showworker()
+{
+	if (this->WorkerIsEmpty)
+	{
+		cout << "文件为空！" << endl;
+	}
+	else
+	{
+		for (int i = 0; i < this->GetNum(); i++)
+		{
+			this->workarray[i]->ShowInfo();
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+int WorkerManager::Exitisworker(string id)
+{
+	int index = -1;
+	for (int i = 0; i < this->GetNum(); i++)
+	{
+		if (this->workarray[i]->ID == id)
+		{
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
+void WorkerManager::Deleteworker()
+{
+	if (this->WorkerIsEmpty)
+	{
+		cout << "文件不存在或者为空!" << endl;
+	}
+	else
+	{
+		cout << "请输入要删除的员工编号：" << endl;
+		string id;
+		cin >> id;
+		if (this->Exitisworker(id) != -1)
+		{
+			for (int i = 0; i < this->workNum - 1; i++)
+			{
+				this->workarray[i] = this->workarray[i + 1];
+			}
+			cout << "删除成功！" << endl;
+			this->workNum--;
+			this->Save();
+		}
+		else
+		{
+			cout << "员工不存在！" << endl;
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+void WorkerManager::Modworker()
+{
+	if (this->workNum == 0)
+	{
+		cout << "文件不存在或为空！" << endl;
+	}
+	else
+	{
+		cout << "请输入要修改的员工编号:" << endl;
+		string id;
+		cin >> id;
+		int index = this->Exitisworker(id);
+		if (index != -1)
+		{
+			string newid;
+			string newname;
+			string newdid;
+			cout << "请输入新的员工编号：" << endl;
+			cin >> newid;
+			cout << "请输入新的员工姓名：" << endl;
+			cin >> newname;
+			cout << "请输入新的员工部门:" << endl;
+			cin >> newdid;
+			int temp;
+			Worker* worker = NULL;
+			if (newdid == "员工")
+			{
+				temp = 1;
+			}
+			if (newdid == "经理")
+			{
+				temp = 2;
+			}
+			if (newdid == "老板")
+			{
+				temp = 3;
+			}
+			switch (temp)
+			{
+			case 1:
+				worker = new Employee(newid, newname, newdid);
+				break;
+			case 2:
+				worker = new Manager(newid, newname, newdid);
+				break;
+			case 3:
+				worker = new Boss(newid, newname, newdid);
+				break;
+			}
+			delete this->workarray[index];
+			this->workarray[index] = worker;
+			this->Save();
+			cout << "修改成功！" << endl;
+		}
+		else
+		{
+			cout << "员工不存在！" << endl;
+		}
+		system("pause");
+		system("cls");
+	}
+}
+
+void WorkerManager::Findworker()
+{
+	if (this->workNum == 0)
+	{
+		cout << "文件不存在或为空！" << endl;
+	}
+	else
+	{
+		cout << "请输入查找方式：" << endl;
+		cout << "1.按编号查找" << endl;
+		cout << "2.按姓名查找" << endl;
+		int temp = 0;
+		string id;
+		string name;
+		cin >> temp;
+		if (temp == 1)
+		{
+			cout << "请输入查找的编号：" << endl;
+			cin >> id;
+			int index = this->Exitisworker(id);
+			if (index == -1)
+			{
+				cout << "此员工不存在！" << endl;
+			}
+			else
+			{
+				cout << "查找成功！" << endl;
+				this->workarray[index]->ShowInfo();
+			}
+		}
+		if (temp == 2)
+		{
+			cout << "请输入要查找的员工姓名：" << endl;
+			cin >> name;
+			bool flag = true;
+			while(flag)
+			{
+				for (int i = 0; i < this->workNum; i++)
+				{
+					if (this->workarray[i]->Name == name)
+					{
+						cout << "查找成功！" << endl;
+						this->workarray[i]->ShowInfo();
+					}
+				}
+				flag = false;
+			}
+		}
+		if (temp != 1 && temp != 2)
+		{
+			cout << "输入有误！" << endl;
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+void WorkerManager::Clearfile()
+{
+	cout << "请确认是否清空！" << endl;
+	cout << "1.确认" << endl;
+	cout << "2.返回" << endl;
+	int temp = 0;
+	cin >> temp;
+	if (temp == 2)
+	{
+		system("pause");
+		system("cls");
+	}
+	if (temp == 1)
+	{
+		//ios::trunc 如果文件存在删除并重新创建
+		ifstream ifs;
+		ifs.open(FILENAME, ios::trunc);
+		ifs.close();
+
+		if (!this->WorkerIsEmpty)
+		{
+			for (int i = 0; i < this->workNum; i++)
+			{
+				if (this->workarray[i] != NULL)
+				{
+					delete this->workarray[i];
+				}
+			}
+			this->workNum = 0;
+			delete[] this->workarray;
+			this->workarray == NULL;
+			this->WorkerIsEmpty = true;
+		}
+		cout << "清除成功！" << endl;
+		system("cls");
+	}
+	if (temp != 1 && temp != 2)
+	{
+		cout << "输入有误！已退出！" << endl;
+		system("pause");
+		system("cls");
+	}
 }

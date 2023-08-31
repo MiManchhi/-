@@ -14,7 +14,7 @@ void Manager::ShowInfo()
 	cout << "员工编号:" << this->ID;
 	cout << "\t员工姓名:" << this->Name;
 	cout << "\t岗位:" << this->GetDeptName();
-	cout << "完成老板分发的任务，分发任务给员工" << endl;
+	cout << "\t岗位职责: 完成老板分发的任务，分发任务给员工" << endl;
  }
 
 string Manager::GetDeptName()

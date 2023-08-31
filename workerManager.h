@@ -30,6 +30,18 @@ public:
 	int GetNum();
 	//初始化员工
 	void initWorker();
-
+	//显示员工信息
+	void Showworker();
+	//查找员工是否存在(通过ID)
+	int Exitisworker(string id);
+	//删除员工
+	void Deleteworker();
+	//修改员工
+	void Modworker();
+	//查找员工
+	void Findworker();
+	//清空文件
+	void Clearfile();
+	//析构函数
 	~WorkerManager();
 };

@@ -14,7 +14,7 @@ void Boss::ShowInfo()
 	cout << "员工编号:" << this->ID;
 	cout << "\t员工姓名:" << this->Name;
 	cout << "\t岗位:" << this->GetDeptName();
-	cout << "分发任务给经理" << endl;
+	cout << "\t岗位职责: 分发任务给经理" << endl;
 }
 
 string Boss::GetDeptName()

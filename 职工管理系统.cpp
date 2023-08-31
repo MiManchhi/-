@@ -26,16 +26,21 @@ int main()
 			wm.Addworker();
 			break;
 		case 2: //显示职工信息
+			wm.Showworker();
 			break;
 		case 3: //删除离职职工
+			wm.Deleteworker();
 			break;
 		case 4: //修改职工信息
+			wm.Modworker();
 			break;
 		case 5: //查找职工信息
+			wm.Findworker();
 			break;
 		case 6: //按照编号排序
 			break;
 		case 7: //清空所有文档
+			wm.Clearfile();
 			break;
 		default:
 			system("cls");	

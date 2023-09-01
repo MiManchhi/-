@@ -3,7 +3,7 @@
 #include"worker.h"
 using namespace std;
 
-Boss::Boss(string id, string name, string did)
+Boss::Boss(int id, string name, string did)
 {
 	this->ID = id;
 	this->Name = name;

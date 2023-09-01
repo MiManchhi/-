@@ -3,7 +3,7 @@
 #include"worker.h"
 using namespace std;
 
-Manager::Manager(string id,string name,string did)
+Manager::Manager(int id,string name,string did)
 {
 	this->ID = id;
 	this->Name = name;

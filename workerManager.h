@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include<fstream>
+#include<algorithm>
 #define FILENAME "worker.txt"
 #include"worker.h"
 #include"employee.h"
@@ -33,7 +34,7 @@ public:
 	//显示员工信息
 	void Showworker();
 	//查找员工是否存在(通过ID)
-	int Exitisworker(string id);
+	int Exitisworker(int id);
 	//删除员工
 	void Deleteworker();
 	//修改员工
@@ -42,6 +43,8 @@ public:
 	void Findworker();
 	//清空文件
 	void Clearfile();
+	//排序
+	void Sortworker();
 	//析构函数
 	~WorkerManager();
 };

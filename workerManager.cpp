@@ -94,7 +94,7 @@ void WorkerManager::Addworker()
 		}
 		for (int i = 0; i < addnum; i++)
 		{
-			string id;
+			int id;
 			string name;
 			string did;
 			cout << "请输入第" << i + 1 << "个员工的编号" << endl;
@@ -202,7 +202,7 @@ WorkerManager :: ~WorkerManager()
 int WorkerManager::GetNum()
 {
 	ifstream ifs;
-	string id;
+	int id;
 	string name;
 	string did;
 	int num = 0;
@@ -219,7 +219,7 @@ void WorkerManager::initWorker()
 {
 	ifstream ifs;
 	ifs.open(FILENAME, ios::in);
-	string id;
+	int id;
 	string name;
 	string did;
 	int index = 0;
@@ -261,7 +261,7 @@ void WorkerManager::Showworker()
 	system("cls");
 }
 
-int WorkerManager::Exitisworker(string id)
+int WorkerManager::Exitisworker(int id)
 {
 	int index = -1;
 	for (int i = 0; i < this->GetNum(); i++)
@@ -284,7 +284,7 @@ void WorkerManager::Deleteworker()
 	else
 	{
 		cout << "请输入要删除的员工编号：" << endl;
-		string id;
+		int id;
 		cin >> id;
 		if (this->Exitisworker(id) != -1)
 		{
@@ -314,12 +314,12 @@ void WorkerManager::Modworker()
 	else
 	{
 		cout << "请输入要修改的员工编号:" << endl;
-		string id;
+		int id;
 		cin >> id;
 		int index = this->Exitisworker(id);
 		if (index != -1)
 		{
-			string newid;
+			int newid;
 			string newname;
 			string newdid;
 			cout << "请输入新的员工编号：" << endl;
@@ -380,7 +380,7 @@ void WorkerManager::Findworker()
 		cout << "1.按编号查找" << endl;
 		cout << "2.按姓名查找" << endl;
 		int temp = 0;
-		string id;
+		int id;
 		string name;
 		cin >> temp;
 		if (temp == 1)
@@ -425,6 +425,73 @@ void WorkerManager::Findworker()
 	system("cls");
 }
 
+void WorkerManager::Sortworker()
+{
+	if (this->workNum == 0)
+	{
+		cout << "文件不存在或者为空！" << endl;
+		system("pause");
+	}
+	else
+	{
+		cout << "请输入排序方式：" << endl;
+		cout << "1.顺序" << endl;
+		cout << "2.倒序" << endl;
+		int select = 0;
+		cin >> select;
+		if (select == 1)
+		{
+			for (int i = 0; i < this->workNum - 1; i++)
+			{
+				for (int j = 0; j < this->workNum - 1 - i; j++)
+				{
+					if (this->workarray[j]->ID > this->workarray[j + 1]->ID)
+					{
+						Worker* temp = this->workarray[j];
+						this->workarray[j] = this->workarray[j + 1];
+						this->workarray[j + 1] = temp;
+					}
+				}
+			}
+			cout << "排序完成！" << endl;
+			for (int i = 0; i < this->workNum; i++)
+			{
+				this->workarray[i]->ShowInfo();
+			}
+			system("pause");
+			system("cls");
+		}
+		if (select == 2)
+		{
+			for (int i = 0; i < this->workNum - 1; i++)
+			{
+				for (int j = 0; j < this->workNum - 1 - i; j++)
+				{
+					if (this->workarray[j]->ID < this->workarray[j + 1]->ID)
+					{
+						Worker* temp = this->workarray[j];
+						this->workarray[j] = this->workarray[j + 1];
+						this->workarray[j + 1] = temp;
+					}
+				}
+			}
+			cout << "排序完成！" << endl;
+			for (int i = 0; i < this->workNum; i++)
+			{
+				this->workarray[i]->ShowInfo();
+			}
+			system("pause");
+			system("cls");
+		}
+		if (select != 1 && select != 2)
+		{
+			cout << "输入有误" << endl;
+			system("pause");
+			system("cls");
+		}
+	}
+}
+
 void WorkerManager::Clearfile()
 {
 	cout << "请确认是否清空！" << endl;
@@ -440,9 +507,9 @@ void WorkerManager::Clearfile()
 	if (temp == 1)
 	{
 		//ios::trunc 如果文件存在删除并重新创建
-		ifstream ifs;
-		ifs.open(FILENAME, ios::trunc);
-		ifs.close();
+		ofstream ofs;
+		ofs.open(FILENAME, ios::trunc);
+		ofs.close();
 
 		if (!this->WorkerIsEmpty)
 		{
@@ -459,6 +526,7 @@ void WorkerManager::Clearfile()
 			this->WorkerIsEmpty = true;
 		}
 		cout << "清除成功！" << endl;
+		system("pause");
 		system("cls");
 	}
 	if (temp != 1 && temp != 2)

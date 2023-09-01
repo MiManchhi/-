@@ -1,7 +1,7 @@
 #include"employee.h"
 using namespace std;
 
-Employee::Employee(string id,string name,string did)
+Employee::Employee(int id,string name,string did)
 {
 	this->ID = id;
 	this->Name = name;

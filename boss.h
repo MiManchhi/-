@@ -6,7 +6,7 @@ using namespace std;
 class Boss : public Worker
 {
 public:
-	Boss(string id, string name, string did);
+	Boss(int id, string name, string did);
 
 	virtual void ShowInfo();
 

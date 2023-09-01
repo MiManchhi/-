@@ -4,7 +4,7 @@ using namespace std;
 class Employee :public Worker
 {
 public:
-	Employee(string id,string name,string did);
+	Employee(int id,string name,string did);
 
 	virtual void ShowInfo();
 

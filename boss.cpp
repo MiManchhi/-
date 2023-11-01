@@ -3,12 +3,12 @@
 #include"worker.h"
 using namespace std;
 
-Boss::Boss(int id, string name, string did)
-{
-	this->ID = id;
-	this->Name = name;
-	this->DeptID = did;
-}
+//Boss::Boss(int id, string name, string did)
+//{
+//	this->ID = id;
+//	this->Name = name;
+//	this->DeptID = did;
+//}
 void Boss::ShowInfo()
 {
 	cout << "Ô±¹¤±àºÅ:" << this->ID;

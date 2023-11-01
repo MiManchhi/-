@@ -1,12 +1,12 @@
 #include"employee.h"
 using namespace std;
 
-Employee::Employee(int id,string name,string did)
-{
-	this->ID = id;
-	this->Name = name;
-	this->DeptID = did;
-}
+Employee::Employee(int id, string name, string did) :Worker(id, name, did) {};
+//{
+//	this->ID = id;
+//	this->Name = name;
+//	this->DeptID = did;
+//}
 void Employee::ShowInfo()
 {
 	cout << "Ô±¹¤±àºÅ:" << this->ID;

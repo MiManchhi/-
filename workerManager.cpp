@@ -195,7 +195,7 @@ WorkerManager :: ~WorkerManager()
 			}
 		}
 		delete[] this->workarray;
-		this->workarray == NULL;
+		this->workarray = NULL;
 	}
 }
 
@@ -522,7 +522,7 @@ void WorkerManager::Clearfile()
 			}
 			this->workNum = 0;
 			delete[] this->workarray;
-			this->workarray == NULL;
+			this->workarray = NULL;
 			this->WorkerIsEmpty = true;
 		}
 		cout << "Çå³ý³É¹¦£¡" << endl;

@@ -3,12 +3,12 @@
 #include"worker.h"
 using namespace std;
 
-Manager::Manager(int id,string name,string did)
-{
-	this->ID = id;
-	this->Name = name;
-	this->DeptID = did;
-}
+//Manager::Manager(int id,string name,string did)
+//{
+//	this->ID = id;
+//	this->Name = name;
+//	this->DeptID = did;
+//}
 void Manager::ShowInfo()
 {
 	cout << "Ô±¹¤±àºÅ:" << this->ID;

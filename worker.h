@@ -6,6 +6,8 @@ using namespace std;
 class Worker
 {
 public:
+	Worker() = default;
+	Worker(int id, string name, string deptid) :ID(id), Name(name), DeptID(deptid) {};
 	//显示个人信息 
 	virtual void ShowInfo() = 0;
 	//获取岗位名称 
